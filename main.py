@@ -1,9 +1,16 @@
 from tkinter import *
+import tkinter.messagebox as massagebox
 import random
 def add_password():
-    with open("password.txt", mode="a") as file:
-        file.write(f"{web_text_field.get()} | {username_field.get()} | {password_field.get()}\n")
-
+    if(web_text_field.get()!="" and password_field.get()!=""):
+        massagebox.showinfo("Password Manager", "Password Added")
+        with open("password.txt", mode="a") as file:
+            file.write(f"{web_text_field.get()} | {username_field.get()} | {password_field.get()}\n")
+        web_text_field.delete(0,END)
+        password_field.delete(0,END)
+    else:
+        massagebox.showinfo("Oops","Empty field founded!!!")
+        
 def ganarate_password():
     charactors = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()"
     password = ""
@@ -11,7 +18,12 @@ def ganarate_password():
         password += random.choice(charactors)
     password_field.delete(0,END)
     password_field.insert(0,password)
-    
+    password_field.clipboard_clear()
+    password_field.clipboard_append(password)
+
+
+
+
 window = Tk()
 window.title("Password Manager")
 window.config(padx=50, pady=50)
@@ -31,6 +43,7 @@ password_lable.grid(row=3, column=0,padx=(20,0))
 web_text_field = Entry(window, font=("Arial", 16),width=38)
 web_text_field.focus()
 username_field = Entry(window, font=("Arial", 16),width=38)
+username_field.insert(0,"tharindudeshan325.com")
 password_field = Entry(window, font=("Arial", 16),width=21)
 
 
