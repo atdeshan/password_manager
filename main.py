@@ -1,11 +1,24 @@
 from tkinter import *
 import tkinter.messagebox as massagebox
 import random
+import json
 def add_password():
+    entry = {web_text_field.get():{"username":username_field.get(),"password":password_field.get()}}
     if(web_text_field.get()!="" and password_field.get()!=""):
         massagebox.showinfo("Password Manager", "Password Added")
-        with open("password.txt", mode="a") as file:
-            file.write(f"{web_text_field.get()} | {username_field.get()} | {password_field.get()}\n")
+        try:
+
+            with open("password.json", mode="r") as file:
+                existing_data = json.load(file)
+        except:
+            with open("password.json",mode = "w") as file:
+                json.dump(entry,file,indent=4)
+        else:     
+            existing_data.update(entry)
+            with open("password.json",mode = "w") as file:
+                json.dump(existing_data,file,indent=4)
+
+            
         web_text_field.delete(0,END)
         password_field.delete(0,END)
     else:
